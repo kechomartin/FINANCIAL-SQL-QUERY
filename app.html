@@ -1,0 +1,366 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); color: var(--color-text-primary); }
+.portfolio { max-width: 860px; padding: 2rem 1rem; }
+.header { margin-bottom: 2rem; }
+.header h1 { font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+.header p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+.badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin: 2px; background: #E6F1FB; color: #0C447C; border: 0.5px solid #B5D4F4; }
+.schema-section { margin-bottom: 2rem; }
+.schema-section h2 { font-size: 16px; font-weight: 500; margin-bottom: 12px; color: var(--color-text-primary); }
+.tables-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.table-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px; }
+.table-card .tname { font-size: 13px; font-weight: 500; color: #185FA5; margin-bottom: 8px; font-family: var(--font-mono); }
+.table-card .col { font-size: 12px; color: var(--color-text-secondary); padding: 2px 0; font-family: var(--font-mono); display: flex; justify-content: space-between; }
+.table-card .col .type { color: #B5D4F4; font-size: 11px; color: #378ADD; }
+.queries-section h2 { font-size: 16px; font-weight: 500; margin-bottom: 14px; }
+.query-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 16px; overflow: hidden; }
+.query-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.query-header:hover { background: var(--color-background-secondary); }
+.query-title { font-size: 14px; font-weight: 500; }
+.query-meta { display: flex; align-items: center; gap: 8px; }
+.level { font-size: 11px; padding: 3px 8px; border-radius: 20px; }
+.level.beginner { background: #EAF3DE; color: #27500A; }
+.level.intermediate { background: #FAEEDA; color: #633806; }
+.level.advanced { background: #FCEBEB; color: #791F1F; }
+.chevron { font-size: 12px; color: var(--color-text-secondary); transition: transform 0.2s; }
+.chevron.open { transform: rotate(180deg); }
+.query-body { padding: 16px; display: none; }
+.query-body.open { display: block; }
+.query-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 14px; }
+.concepts { margin-bottom: 14px; }
+.concepts span { font-size: 11px; color: var(--color-text-secondary); margin-right: 6px; }
+pre { background: #042C53; border-radius: var(--border-radius-md); padding: 16px; overflow-x: auto; font-size: 12.5px; line-height: 1.7; font-family: var(--font-mono); }
+.kw { color: #85B7EB; font-weight: 500; }
+.fn { color: #9FE1CB; }
+.str { color: #FAC775; }
+.cmt { color: #888780; font-style: italic; }
+.num { color: #F5C4B3; }
+.result-label { font-size: 12px; color: var(--color-text-secondary); margin: 14px 0 8px; font-weight: 500; }
+.result-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.result-table th { text-align: left; padding: 6px 10px; background: var(--color-background-secondary); color: var(--color-text-secondary); font-weight: 500; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.result-table td { padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+.result-table tr:last-child td { border-bottom: none; }
+.ask-btn { margin-top: 14px; font-size: 13px; padding: 7px 14px; cursor: pointer; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: transparent; color: var(--color-text-primary); }
+.ask-btn:hover { background: var(--color-background-secondary); }
+.divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 2rem 0; }
+</style>
+
+<div class="portfolio">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Finance SQL portfolio with schema and six example queries</h2>
+
+  <div class="header">
+    <h1>Finance &amp; banking — SQL portfolio</h1>
+    <p>A showcase of SQL skills applied to a realistic banking database. Covers customer management, transactions, loans, and fraud detection scenarios.</p>
+    <div style="margin-top:12px;">
+      <span class="badge">PostgreSQL</span>
+      <span class="badge">Window functions</span>
+      <span class="badge">CTEs</span>
+      <span class="badge">Aggregations</span>
+      <span class="badge">Subqueries</span>
+      <span class="badge">JOINs</span>
+    </div>
+  </div>
+
+  <div class="schema-section">
+    <h2>Database schema</h2>
+    <div class="tables-grid">
+      <div class="table-card">
+        <div class="tname">customers</div>
+        <div class="col"><span>customer_id</span><span class="type">PK INT</span></div>
+        <div class="col"><span>full_name</span><span class="type">VARCHAR</span></div>
+        <div class="col"><span>email</span><span class="type">VARCHAR</span></div>
+        <div class="col"><span>country</span><span class="type">VARCHAR</span></div>
+        <div class="col"><span>joined_date</span><span class="type">DATE</span></div>
+        <div class="col"><span>risk_score</span><span class="type">DECIMAL</span></div>
+      </div>
+      <div class="table-card">
+        <div class="tname">accounts</div>
+        <div class="col"><span>account_id</span><span class="type">PK INT</span></div>
+        <div class="col"><span>customer_id</span><span class="type">FK INT</span></div>
+        <div class="col"><span>account_type</span><span class="type">VARCHAR</span></div>
+        <div class="col"><span>balance</span><span class="type">DECIMAL</span></div>
+        <div class="col"><span>opened_date</span><span class="type">DATE</span></div>
+        <div class="col"><span>status</span><span class="type">VARCHAR</span></div>
+      </div>
+      <div class="table-card">
+        <div class="tname">transactions</div>
+        <div class="col"><span>txn_id</span><span class="type">PK INT</span></div>
+        <div class="col"><span>account_id</span><span class="type">FK INT</span></div>
+        <div class="col"><span>txn_date</span><span class="type">TIMESTAMP</span></div>
+        <div class="col"><span>amount</span><span class="type">DECIMAL</span></div>
+        <div class="col"><span>txn_type</span><span class="type">VARCHAR</span></div>
+        <div class="col"><span>merchant</span><span class="type">VARCHAR</span></div>
+      </div>
+      <div class="table-card">
+        <div class="tname">loans</div>
+        <div class="col"><span>loan_id</span><span class="type">PK INT</span></div>
+        <div class="col"><span>customer_id</span><span class="type">FK INT</span></div>
+        <div class="col"><span>loan_amount</span><span class="type">DECIMAL</span></div>
+        <div class="col"><span>interest_rate</span><span class="type">DECIMAL</span></div>
+        <div class="col"><span>start_date</span><span class="type">DATE</span></div>
+        <div class="col"><span>status</span><span class="type">VARCHAR</span></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="queries-section">
+    <h2>Query showcase</h2>
+
+    <div class="query-card">
+      <div class="query-header" onclick="toggle(this)">
+        <span class="query-title">1. Monthly transaction volume by account type</span>
+        <div class="query-meta"><span class="level beginner">Beginner</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="query-body">
+        <p class="query-desc">Aggregates total transaction volume and count grouped by account type and month — a common reporting query for operations dashboards.</p>
+        <div class="concepts"><span>Concepts:</span><span class="badge">GROUP BY</span><span class="badge">DATE_TRUNC</span><span class="badge">JOIN</span></div>
+        <pre><span class="cmt">-- Monthly transaction volume per account type</span>
+<span class="kw">SELECT</span>
+  a.account_type,
+  <span class="fn">DATE_TRUNC</span>(<span class="str">'month'</span>, t.txn_date) <span class="kw">AS</span> month,
+  <span class="fn">COUNT</span>(t.txn_id)             <span class="kw">AS</span> txn_count,
+  <span class="fn">SUM</span>(t.amount)               <span class="kw">AS</span> total_volume,
+  <span class="fn">AVG</span>(t.amount)               <span class="kw">AS</span> avg_txn_size
+<span class="kw">FROM</span> transactions t
+<span class="kw">JOIN</span> accounts a <span class="kw">ON</span> t.account_id = a.account_id
+<span class="kw">WHERE</span> t.txn_date >= <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="str">'12 months'</span>
+<span class="kw">GROUP BY</span> a.account_type, month
+<span class="kw">ORDER BY</span> month <span class="kw">DESC</span>, total_volume <span class="kw">DESC</span>;</pre>
+        <p class="result-label">Sample output</p>
+        <table class="result-table">
+          <tr><th>account_type</th><th>month</th><th>txn_count</th><th>total_volume</th><th>avg_txn_size</th></tr>
+          <tr><td>Savings</td><td>2024-11-01</td><td>4,821</td><td>$2,340,110</td><td>$485.42</td></tr>
+          <tr><td>Current</td><td>2024-11-01</td><td>9,043</td><td>$5,891,230</td><td>$651.30</td></tr>
+          <tr><td>Investment</td><td>2024-11-01</td><td>1,204</td><td>$8,204,500</td><td>$6,814.37</td></tr>
+        </table>
+        <button class="ask-btn" onclick="sendPrompt('Can you add a query that compares this month to the previous month using LAG()?')">Add month-over-month comparison ↗</button>
+      </div>
+    </div>
+
+    <div class="query-card">
+      <div class="query-header" onclick="toggle(this)">
+        <span class="query-title">2. Top customers by total deposits</span>
+        <div class="query-meta"><span class="level beginner">Beginner</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="query-body">
+        <p class="query-desc">Ranks customers by their total deposit activity, useful for identifying high-value clients for relationship management or upselling.</p>
+        <div class="concepts"><span>Concepts:</span><span class="badge">JOIN</span><span class="badge">WHERE filter</span><span class="badge">ORDER BY</span><span class="badge">LIMIT</span></div>
+        <pre><span class="cmt">-- Top 10 customers by total deposits</span>
+<span class="kw">SELECT</span>
+  c.customer_id,
+  c.full_name,
+  c.country,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> a.account_id) <span class="kw">AS</span> num_accounts,
+  <span class="fn">SUM</span>(t.amount)                <span class="kw">AS</span> total_deposits
+<span class="kw">FROM</span> customers c
+<span class="kw">JOIN</span> accounts a    <span class="kw">ON</span> c.customer_id = a.customer_id
+<span class="kw">JOIN</span> transactions t <span class="kw">ON</span> a.account_id  = t.account_id
+<span class="kw">WHERE</span> t.txn_type = <span class="str">'DEPOSIT'</span>
+  <span class="kw">AND</span> a.status    = <span class="str">'ACTIVE'</span>
+<span class="kw">GROUP BY</span> c.customer_id, c.full_name, c.country
+<span class="kw">ORDER BY</span> total_deposits <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">10</span>;</pre>
+        <p class="result-label">Sample output</p>
+        <table class="result-table">
+          <tr><th>customer_id</th><th>full_name</th><th>country</th><th>num_accounts</th><th>total_deposits</th></tr>
+          <tr><td>C-1042</td><td>Amara Osei</td><td>Ghana</td><td>3</td><td>$412,000</td></tr>
+          <tr><td>C-0889</td><td>Fatuma Wanjiru</td><td>Kenya</td><td>2</td><td>$388,750</td></tr>
+          <tr><td>C-2201</td><td>James Mutua</td><td>Kenya</td><td>4</td><td>$311,200</td></tr>
+        </table>
+        <button class="ask-btn" onclick="sendPrompt('Can you modify this query to also show customers with no deposits using a LEFT JOIN?')">Show zero-deposit customers too ↗</button>
+      </div>
+    </div>
+
+    <div class="query-card">
+      <div class="query-header" onclick="toggle(this)">
+        <span class="query-title">3. Running balance per account using window functions</span>
+        <div class="query-meta"><span class="level intermediate">Intermediate</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="query-body">
+        <p class="query-desc">Calculates a running account balance over time by accumulating transaction amounts in chronological order — a classic use of window functions in finance.</p>
+        <div class="concepts"><span>Concepts:</span><span class="badge">SUM() OVER</span><span class="badge">PARTITION BY</span><span class="badge">ORDER BY (window)</span></div>
+        <pre><span class="cmt">-- Running balance for each account over time</span>
+<span class="kw">SELECT</span>
+  account_id,
+  txn_date,
+  txn_type,
+  amount,
+  <span class="fn">SUM</span>(
+    <span class="kw">CASE</span>
+      <span class="kw">WHEN</span> txn_type = <span class="str">'DEPOSIT'</span>  <span class="kw">THEN</span>  amount
+      <span class="kw">WHEN</span> txn_type = <span class="str">'WITHDRAW'</span> <span class="kw">THEN</span> -amount
+      <span class="kw">ELSE</span> <span class="num">0</span>
+    <span class="kw">END</span>
+  ) <span class="kw">OVER</span> (
+    <span class="kw">PARTITION BY</span> account_id
+    <span class="kw">ORDER BY</span> txn_date
+    <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
+  ) <span class="kw">AS</span> running_balance
+<span class="kw">FROM</span> transactions
+<span class="kw">ORDER BY</span> account_id, txn_date;</pre>
+        <p class="result-label">Sample output</p>
+        <table class="result-table">
+          <tr><th>account_id</th><th>txn_date</th><th>txn_type</th><th>amount</th><th>running_balance</th></tr>
+          <tr><td>A-0041</td><td>2024-01-03</td><td>DEPOSIT</td><td>$5,000</td><td>$5,000</td></tr>
+          <tr><td>A-0041</td><td>2024-01-15</td><td>DEPOSIT</td><td>$2,000</td><td>$7,000</td></tr>
+          <tr><td>A-0041</td><td>2024-02-01</td><td>WITHDRAW</td><td>$800</td><td>$6,200</td></tr>
+        </table>
+        <button class="ask-btn" onclick="sendPrompt('Can you explain ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW in more detail?')">Explain the window frame ↗</button>
+      </div>
+    </div>
+
+    <div class="query-card">
+      <div class="query-header" onclick="toggle(this)">
+        <span class="query-title">4. Loan default risk segmentation using CTEs</span>
+        <div class="query-meta"><span class="level intermediate">Intermediate</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="query-body">
+        <p class="query-desc">Uses a CTE to segment customers by their loan status and risk score, then produces a summary count per segment — useful for credit risk reporting.</p>
+        <div class="concepts"><span>Concepts:</span><span class="badge">WITH (CTE)</span><span class="badge">CASE WHEN</span><span class="badge">GROUP BY</span></div>
+        <pre><span class="cmt">-- Segment customers by loan risk profile</span>
+<span class="kw">WITH</span> customer_risk <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    c.customer_id,
+    c.full_name,
+    c.risk_score,
+    l.status      <span class="kw">AS</span> loan_status,
+    l.loan_amount,
+    <span class="kw">CASE</span>
+      <span class="kw">WHEN</span> c.risk_score < <span class="num">0.3</span> <span class="kw">THEN</span> <span class="str">'Low risk'</span>
+      <span class="kw">WHEN</span> c.risk_score < <span class="num">0.7</span> <span class="kw">THEN</span> <span class="str">'Medium risk'</span>
+      <span class="kw">ELSE</span>                       <span class="str">'High risk'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> risk_band
+  <span class="kw">FROM</span> customers c
+  <span class="kw">JOIN</span> loans l <span class="kw">ON</span> c.customer_id = l.customer_id
+  <span class="kw">WHERE</span> l.status <span class="kw">IN</span> (<span class="str">'ACTIVE'</span>, <span class="str">'DEFAULTED'</span>)
+)
+<span class="kw">SELECT</span>
+  risk_band,
+  loan_status,
+  <span class="fn">COUNT</span>(*)             <span class="kw">AS</span> customers,
+  <span class="fn">SUM</span>(loan_amount)     <span class="kw">AS</span> total_exposure,
+  <span class="fn">AVG</span>(risk_score)      <span class="kw">AS</span> avg_risk_score
+<span class="kw">FROM</span> customer_risk
+<span class="kw">GROUP BY</span> risk_band, loan_status
+<span class="kw">ORDER BY</span> risk_band, loan_status;</pre>
+        <p class="result-label">Sample output</p>
+        <table class="result-table">
+          <tr><th>risk_band</th><th>loan_status</th><th>customers</th><th>total_exposure</th><th>avg_risk_score</th></tr>
+          <tr><td>High risk</td><td>DEFAULTED</td><td>142</td><td>$4,210,000</td><td>0.84</td></tr>
+          <tr><td>Medium risk</td><td>ACTIVE</td><td>891</td><td>$22,450,000</td><td>0.51</td></tr>
+          <tr><td>Low risk</td><td>ACTIVE</td><td>2,104</td><td>$61,800,000</td><td>0.18</td></tr>
+        </table>
+        <button class="ask-btn" onclick="sendPrompt('Can you extend the loan risk query to also calculate the default rate percentage per risk band?')">Add default rate % ↗</button>
+      </div>
+    </div>
+
+    <div class="query-card">
+      <div class="query-header" onclick="toggle(this)">
+        <span class="query-title">5. Fraud detection — unusual transaction spikes</span>
+        <div class="query-meta"><span class="level advanced">Advanced</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="query-body">
+        <p class="query-desc">Flags accounts where a single transaction is more than 3x the account's own average transaction size — a simple but realistic fraud signal using window functions.</p>
+        <div class="concepts"><span>Concepts:</span><span class="badge">AVG() OVER</span><span class="badge">CTE</span><span class="badge">HAVING</span><span class="badge">Subquery filter</span></div>
+        <pre><span class="cmt">-- Flag transactions 3x above the account average</span>
+<span class="kw">WITH</span> account_stats <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    account_id,
+    txn_id,
+    txn_date,
+    amount,
+    merchant,
+    <span class="fn">AVG</span>(amount) <span class="kw">OVER</span> (
+      <span class="kw">PARTITION BY</span> account_id
+    ) <span class="kw">AS</span> avg_txn_amount
+  <span class="kw">FROM</span> transactions
+  <span class="kw">WHERE</span> txn_type = <span class="str">'DEBIT'</span>
+)
+<span class="kw">SELECT</span>
+  a.account_id,
+  c.full_name,
+  s.txn_date,
+  s.merchant,
+  s.amount,
+  <span class="fn">ROUND</span>(s.avg_txn_amount, <span class="num">2</span>) <span class="kw">AS</span> account_avg,
+  <span class="fn">ROUND</span>(s.amount / s.avg_txn_amount, <span class="num">2</span>) <span class="kw">AS</span> spike_ratio
+<span class="kw">FROM</span> account_stats s
+<span class="kw">JOIN</span> accounts a   <span class="kw">ON</span> s.account_id  = a.account_id
+<span class="kw">JOIN</span> customers c  <span class="kw">ON</span> a.customer_id = c.customer_id
+<span class="kw">WHERE</span> s.amount > s.avg_txn_amount * <span class="num">3</span>
+<span class="kw">ORDER BY</span> spike_ratio <span class="kw">DESC</span>;</pre>
+        <p class="result-label">Sample output</p>
+        <table class="result-table">
+          <tr><th>account_id</th><th>full_name</th><th>txn_date</th><th>merchant</th><th>amount</th><th>spike_ratio</th></tr>
+          <tr><td>A-0712</td><td>Peter Njomo</td><td>2024-11-22</td><td>Online Store X</td><td>$12,400</td><td>8.2x</td></tr>
+          <tr><td>A-1034</td><td>Grace Achieng</td><td>2024-11-19</td><td>ATM Withdrawal</td><td>$6,800</td><td>5.4x</td></tr>
+        </table>
+        <button class="ask-btn" onclick="sendPrompt('Can you make the fraud query more sophisticated by adding a 30-day rolling average instead of all-time average?')">Use rolling 30-day average ↗</button>
+      </div>
+    </div>
+
+    <div class="query-card">
+      <div class="query-header" onclick="toggle(this)">
+        <span class="query-title">6. Customer lifetime value with cohort grouping</span>
+        <div class="query-meta"><span class="level advanced">Advanced</span><span class="chevron">▼</span></div>
+      </div>
+      <div class="query-body">
+        <p class="query-desc">Groups customers into join-year cohorts and calculates average lifetime transaction value per cohort — demonstrates cohort analysis, a key skill in fintech analytics.</p>
+        <div class="concepts"><span>Concepts:</span><span class="badge">EXTRACT</span><span class="badge">Cohort analysis</span><span class="badge">Multi-CTE</span><span class="badge">NTILE</span></div>
+        <pre><span class="cmt">-- Customer lifetime value by join-year cohort</span>
+<span class="kw">WITH</span> customer_totals <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    c.customer_id,
+    c.full_name,
+    <span class="fn">EXTRACT</span>(<span class="kw">YEAR FROM</span> c.joined_date) <span class="kw">AS</span> cohort_year,
+    <span class="fn">SUM</span>(t.amount)                       <span class="kw">AS</span> lifetime_value,
+    <span class="fn">COUNT</span>(t.txn_id)                     <span class="kw">AS</span> total_txns
+  <span class="kw">FROM</span> customers c
+  <span class="kw">JOIN</span> accounts a     <span class="kw">ON</span> c.customer_id = a.customer_id
+  <span class="kw">JOIN</span> transactions t <span class="kw">ON</span> a.account_id  = t.account_id
+  <span class="kw">GROUP BY</span> c.customer_id, c.full_name, cohort_year
+),
+cohort_summary <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    cohort_year,
+    <span class="fn">COUNT</span>(customer_id)        <span class="kw">AS</span> cohort_size,
+    <span class="fn">ROUND</span>(<span class="fn">AVG</span>(lifetime_value), <span class="num">2</span>) <span class="kw">AS</span> avg_ltv,
+    <span class="fn">ROUND</span>(<span class="fn">AVG</span>(total_txns), <span class="num">1</span>)    <span class="kw">AS</span> avg_txns,
+    <span class="fn">SUM</span>(lifetime_value)       <span class="kw">AS</span> cohort_revenue
+  <span class="kw">FROM</span> customer_totals
+  <span class="kw">GROUP BY</span> cohort_year
+)
+<span class="kw">SELECT</span> *,
+  <span class="fn">ROUND</span>(cohort_revenue * <span class="num">100.0</span> /
+    <span class="fn">SUM</span>(cohort_revenue) <span class="kw">OVER</span>(), <span class="num">1</span>) <span class="kw">AS</span> revenue_share_pct
+<span class="kw">FROM</span> cohort_summary
+<span class="kw">ORDER BY</span> cohort_year;</pre>
+        <p class="result-label">Sample output</p>
+        <table class="result-table">
+          <tr><th>cohort_year</th><th>cohort_size</th><th>avg_ltv</th><th>avg_txns</th><th>revenue_share_pct</th></tr>
+          <tr><td>2020</td><td>1,204</td><td>$18,420</td><td>84.2</td><td>28.4%</td></tr>
+          <tr><td>2021</td><td>2,018</td><td>$12,110</td><td>61.5</td><td>31.2%</td></tr>
+          <tr><td>2022</td><td>3,401</td><td>$7,840</td><td>38.9</td><td>34.1%</td></tr>
+          <tr><td>2023</td><td>4,120</td><td>$2,950</td><td>14.1</td><td>6.3%</td></tr>
+        </table>
+        <button class="ask-btn" onclick="sendPrompt('Can you add a query that shows month-by-month retention within each cohort?')">Add cohort retention ↗</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.query-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
+  if (!isOpen) { body.classList.add('open'); chevron.classList.add('open'); }
+}
+</script>
